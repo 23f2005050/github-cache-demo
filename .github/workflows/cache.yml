@@ -1,0 +1,28 @@
+name: Cache Demo
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  cache-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache dependencies
+        id: cache-step
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache-demo
+          key: cache-565a647
+
+      - name: Install dependencies
+        run: |
+          mkdir -p ~/.cache-demo
+          echo "fake dependency file" > ~/.cache-demo/deps.txt
+
+      - name: prime-cache-565a647
+        run: echo "Cache hit? -> ${{ steps.cache-step.outputs.cache-hit }}"
